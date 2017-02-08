@@ -7,8 +7,8 @@ require "fort_ci/config"
 
 require "fort_ci/controllers"
 
-require "fort_ci/helpers/render"
-require "fort_ci/helpers/auth"
+require "fort_ci/helpers/render_helper"
+require "fort_ci/helpers/auth_helper"
 
 module FortCI
   class App < Sinatra::Base
@@ -23,11 +23,11 @@ module FortCI
       )
     end
 
-    register Controllers::Auth
-    register Controllers::Users
+    register AuthController
+    register UsersController
 
-    helpers Helpers::Render
-    helpers Helpers::Auth
+    helpers RenderHelper
+    helpers AuthHelper
 
     before { env['PATH_INFO'].sub!(/^\/api\//, '/') }
 

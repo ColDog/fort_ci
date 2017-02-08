@@ -1,7 +1,7 @@
 require "sinatra/extension"
 
-module FortCI::Controllers
-  module Auth
+module FortCI
+  module AuthController
     extend Sinatra::Extension
 
     get "/auth/:provider/callback/?" do

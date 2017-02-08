@@ -1,10 +1,10 @@
-require "fort_ci/helpers/serialization"
+require "fort_ci/helpers/serialization_helper"
 require "logger"
 require "yaml"
 
 module FortCI
   class Config
-    include Helpers::Serialization
+    include SeralizationHelper
     attr_accessor :ui_root_url, :api_root_url, :env, :secret, :github_credentials, :log_sql
 
     def initialize

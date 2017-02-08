@@ -1,7 +1,2 @@
-module FortCI
-  module Controllers
-  end
-end
-
-require "fort_ci/controllers/auth"
-require "fort_ci/controllers/users"
+require "fort_ci/controllers/auth_controller"
+require "fort_ci/controllers/users_controller"

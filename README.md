@@ -1,8 +1,11 @@
 # FortCi
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/fort_ci`. To experiment with that code, run `bin/console` for an interactive prompt.
+A pipeline based CI tool.
 
-TODO: Delete this and the text above, and describe your gem
+## Jobs and Pipelines
+
+Event(project, params)
+    --> Pipeline start
 
 ## Installation
 

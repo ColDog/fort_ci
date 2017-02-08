@@ -13,19 +13,15 @@ module FortCI
   end
 
   module RunnerClient
-    def cancel
-      if worker
-        res = conn.delete("/jobs/#{CGI::escape(key)}")
-        if res.status < 200 || res.status > 300
-          raise RunnerError.new(res.body, res.status)
-        end
+    def cancel_runner
+      res = conn.delete("/jobs/#{CGI::escape(id)}")
+      if res.status < 200 || res.status > 300
+        raise RunnerError.new(res.body, res.status)
       end
-    ensure
-      update(status: 'CANCELLED')
     end
 
-    def output
-      res = conn.get("/jobs/#{CGI::escape(key)}")
+    def runner_output
+      res = conn.get("/jobs/#{CGI::escape(id)}")
       if res.status < 200 || res.status > 300
         raise RunnerError.new(res.body, res.status)
       end
@@ -34,7 +30,7 @@ module FortCI
     end
 
     def conn
-      @conn = Faraday.new(url: "http://#{worker}") do |faraday|
+      @conn = Faraday.new(url: "http://#{runner}") do |faraday|
         faraday.request  :url_encoded             # form-encode POST params
         faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
       end

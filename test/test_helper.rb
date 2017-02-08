@@ -5,3 +5,20 @@ require "fort_ci"
 
 require "minitest/autorun"
 require "minitest/spec"
+require "rack/test"
+
+require "omniauth"
+
+OmniAuth.config.test_mode = true
+
+include Rack::Test::Methods
+
+def app
+  FortCI::App
+end
+
+class Minitest::Spec
+  def run(*args, &block)
+    Sequel::Model.db.transaction(:rollback=>:always, :auto_savepoint=>true){super}
+  end
+end

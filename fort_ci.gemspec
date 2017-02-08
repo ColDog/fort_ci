@@ -35,4 +35,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "mysql2"
 
   spec.add_dependency "sequel"
+  spec.add_dependency "omniauth", "~> 1.3"
+  spec.add_dependency "omniauth-github", "~> 1.1.2"
+  spec.add_dependency "puma", "~> 3.6"
+  spec.add_dependency "sinatra", "~> 2.0.0.beta2"
+  spec.add_dependency "sinatra-contrib", "~> 2.0.0.beta2"
+  spec.add_dependency "rack", "~> 2.0"
 end

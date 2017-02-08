@@ -9,4 +9,9 @@ describe FortCI do
     refute_nil FortCI.config
     refute_nil FortCI.config.database
   end
+
+  it "can return ok" do
+    get "/"
+    assert last_response.ok?
+  end
 end

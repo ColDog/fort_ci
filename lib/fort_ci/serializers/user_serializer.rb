@@ -1,8 +1,7 @@
-require "fort_ci/serializers/base"
+require "fort_ci/serializers/base_serializer"
 
 module FortCI
   class UserSerializer < BaseSerializer
-    root_key :user
     attributes :id, :name, :email
   end
 end

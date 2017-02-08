@@ -9,7 +9,7 @@ module FortCI
 
       case type
         when :json
-          result = json(resource)
+          result = json(resource, root: args[:root])
         when :plain
           result = resource
         else
@@ -19,9 +19,14 @@ module FortCI
       halt status, result
     end
 
-    def json(resource)
+    def json(resource, root: nil)
       content_type "application/json"
-      JSON.generate(serializable_resource(resource))
+      if root
+        result = {root => serializable_resource(resource)}
+      else
+        result = serializable_resource(resource)
+      end
+      JSON.generate(result)
     end
 
     def serializable_resource(resource)

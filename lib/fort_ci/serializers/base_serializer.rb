@@ -6,10 +6,6 @@ module FortCI
       @object = object
     end
 
-    def self.root_key(root_key=nil)
-      @root_key ||= root_key
-    end
-
     def self.attributes(*attrs)
       @attributes ||= []
       @attributes = (@attributes + attrs.map(&:to_sym)).uniq
@@ -29,7 +25,7 @@ module FortCI
         end
       end
 
-      {self.class.root_key => hash}
+      hash
     end
 
   end

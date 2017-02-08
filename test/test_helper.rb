@@ -12,7 +12,7 @@ require "omniauth"
 OmniAuth.config.test_mode = true
 
 test_auth = OmniAuth::AuthHash.new(
-    provider: 'github',
+    provider: 'mock',
     uid: '12345',
     info: {
         email: 'test123',
@@ -27,8 +27,16 @@ include Rack::Test::Methods
 
 require "test_seeder"
 
-def test_user
+def user
   @test_user ||= FortCI::User.find(email: 'colinwalker270@gmail.com')
+end
+
+def get_as_user(path, opts={}, target_user=user)
+  get path, opts, 'rack.session' => {user_id: target_user.id}
+end
+
+def post_as_user(path, opts={}, target_user=user)
+  post path, opts, 'rack.session' => {user_id: target_user.id}
 end
 
 def response

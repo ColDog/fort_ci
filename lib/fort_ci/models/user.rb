@@ -1,8 +1,12 @@
 require "fort_ci/db"
+require "fort_ci/models/team"
+require "fort_ci/clients/github_client"
+require "fort_ci/clients/mock_client"
 require "sequel"
 
 module FortCI
   class User < Sequel::Model
+    many_to_many :teams, left_key: :user_id, right_key: :team_id, join_table: :user_teams
 
     def self.from_omniauth(auth)
       new_user = false
@@ -25,6 +29,20 @@ module FortCI
     end
 
     def sync
+      client.teams.each do |team|
+        team = Team.create(provider: provider, provider_id: team[:id], name: team[:name])
+        DB[:user_teams].insert(user_id: id, team_id: team.id)
+      end
+    end
+
+    def client
+      @client ||= begin
+        if provider == 'github'
+          GithubClient.new(username, token)
+        elsif provider == 'mock' && FortCI.config.env == :test
+          MockClient.new(username, token)
+        end
+      end
     end
 
   end

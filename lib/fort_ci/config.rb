@@ -4,7 +4,7 @@ require "yaml"
 
 module FortCI
   class Config
-    include SeralizationHelper
+    include SerializationHelper
     attr_accessor :ui_root_url, :api_root_url, :env, :secret, :github_credentials, :log_sql
 
     def initialize

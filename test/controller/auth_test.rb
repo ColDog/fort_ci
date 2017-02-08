@@ -1,6 +1,6 @@
 require "test_helper"
 
-describe FortCI::Controllers::Auth do
+describe FortCI::AuthController do
   it "can sign up a user" do
     get "/auth/github"
     assert_equal 302, last_response.status

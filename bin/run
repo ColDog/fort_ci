@@ -8,5 +8,6 @@ cmd = ARGV[0]
 if cmd == "migrate"
   require "sequel"
   Sequel.extension :migration
+  # TODO: How will this work when the gem is deployed somewhere else?
   Sequel::Migrator.run(FortCI::DB, "lib/fort_ci/migrations")
 end

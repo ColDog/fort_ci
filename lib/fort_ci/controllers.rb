@@ -4,3 +4,4 @@ module FortCI
 end
 
 require "fort_ci/controllers/auth"
+require "fort_ci/controllers/users"

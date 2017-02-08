@@ -25,6 +25,16 @@ OmniAuth.config.mock_auth[:github] = test_auth
 
 include Rack::Test::Methods
 
+require "test_seeder"
+
+def test_user
+  @test_user ||= FortCI::User.find(email: 'colinwalker270@gmail.com')
+end
+
+def response
+  last_response
+end
+
 def app
   FortCI::App
 end

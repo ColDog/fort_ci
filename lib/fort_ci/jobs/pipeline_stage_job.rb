@@ -33,7 +33,7 @@ module FortCI
 
       # if we've gotten here all the checks are passing and we can move onto the next stage
 
-      if !next_stage.present? && !last_stage_pending?
+      if !next_stage && !last_stage_pending?
         # no next stage, pipeline is complete
         complete_pipeline :successful
         return
@@ -63,7 +63,7 @@ module FortCI
     end
 
     def on_success
-      pipeline.save!
+      pipeline.save
     end
 
     def complete_pipeline(status)
@@ -91,17 +91,17 @@ module FortCI
     end
 
     def last_stage_failed?
-      Job.where(
+      !Job.where(
           'pipeline_id = ? AND pipeline_stage = ? AND (status = "FAILED" OR status = "CANCELLED")',
           pipeline.id, pipeline.stage
-      ).exists?
+      ).empty?
     end
 
     def last_stage_pending?
-      Job.where(
+      !Job.where(
           'pipeline_id = ? AND pipeline_stage = ? AND (status = "QUEUED" OR status = "PENDING")',
           pipeline.id, pipeline.stage
-      ).exists?
+      ).empty?
     end
 
   end

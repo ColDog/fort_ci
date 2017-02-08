@@ -22,6 +22,10 @@ module FortCI
       @variables ||= symbolize_keys(super)
     end
 
+    def status?(is)
+      status && status.upcase == is.to_s.upcase
+    end
+
     def event
       @event ||= Event.new(symbolize_keys(super))
     end

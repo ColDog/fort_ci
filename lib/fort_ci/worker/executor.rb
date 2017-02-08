@@ -60,6 +60,10 @@ module FortCI
         FortCI.logger
       end
 
+      def run_all_queued
+        run(WorkerJob.count)
+      end
+
       def run(number_to_run=nil)
         begin
           while true

@@ -5,6 +5,8 @@ require "omniauth-github"
 
 require "fort_ci/config"
 
+require "fort_ci/controllers"
+
 module FortCI
   class App < Sinatra::Base
 
@@ -17,6 +19,8 @@ module FortCI
         scope: FortCI.config.github_credentials[:scope],
       )
     end
+
+    register Controllers::Sessions
 
     before { env['PATH_INFO'].sub!(/^\/api\//, '/') }
 

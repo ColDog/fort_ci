@@ -5,7 +5,7 @@ require "yaml"
 module FortCI
   class Config
     include Helpers
-    attr_accessor :ui_root_url, :api_root_url, :env, :secret, :github_credentials
+    attr_accessor :ui_root_url, :api_root_url, :env, :secret, :github_credentials, :log_sql
 
     def initialize
       @ui_root_url = ENV['UI_ROOT'] || 'http://localhost:3001'
@@ -22,7 +22,11 @@ module FortCI
     end
 
     def database
-      @database[env]
+      if log_sql
+        (@database[env] || {}).merge(logger: logger)
+      else
+        @database[env] || {}
+      end
     end
   end
 

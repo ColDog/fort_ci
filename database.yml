@@ -1,2 +1,7 @@
 test:
-  driver: mysql2
+  adapter: sqlite
+  database: tmp/test.db
+
+development:
+  adapter: sqlite
+  database: tmp/dev.db

@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require "bundler/setup"
+require "fort_ci"
+
+cmd = ARGV[0]
+
+if cmd == "migrate"
+  require "sequel"
+  Sequel.extension :migration
+  Sequel::Migrator.run(FortCI::DB, "lib/fort_ci/migrations")
+end

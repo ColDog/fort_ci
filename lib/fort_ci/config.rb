@@ -1,5 +1,6 @@
-require "yaml"
 require "fort_ci/helpers"
+require "logger"
+require "yaml"
 
 module FortCI
   class Config
@@ -16,6 +17,17 @@ module FortCI
 
     def database
       @database[env]
+    end
+  end
+
+  class << self
+    attr_writer :config, :logger
+    def config
+      @config ||= Config.new
+    end
+
+    def logger
+      @logger ||= Logger.new(STDOUT)
     end
   end
 end

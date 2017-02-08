@@ -11,6 +11,18 @@ require "omniauth"
 
 OmniAuth.config.test_mode = true
 
+test_auth = OmniAuth::AuthHash.new(
+    provider: 'github',
+    uid: '12345',
+    info: {
+        email: 'test123',
+        username: 'testing',
+        name: '1234',
+    },
+    credentials: {},
+)
+OmniAuth.config.mock_auth[:github] = test_auth
+
 include Rack::Test::Methods
 
 def app

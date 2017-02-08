@@ -20,7 +20,7 @@ module FortCI
       )
     end
 
-    register Controllers::Sessions
+    register Controllers::Auth
 
     before { env['PATH_INFO'].sub!(/^\/api\//, '/') }
 

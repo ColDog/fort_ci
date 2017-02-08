@@ -4,8 +4,9 @@ A pipeline based CI tool.
 
 ## Jobs and Pipelines
 
-Event(project, params)
-    --> Pipeline start
+1) Event(project, params) is run
+2) Pipelines are checked to see if the event should trigger them
+3) 
 
 ## Installation
 

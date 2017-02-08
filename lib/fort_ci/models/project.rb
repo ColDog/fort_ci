@@ -5,9 +5,12 @@ require "sequel"
 
 module FortCI
   class Project < Sequel::Model
+    plugin :serialization
+
     attr_accessor :repo_owner_id
     many_to_one :team
     many_to_one :user
+    serialize_attributes :json, :enabled_pipelines
 
     def self.create_for_entity(entity, name)
       found = find(name: name)

@@ -1,3 +1,4 @@
+require "yaml"
 require "fort_ci/helpers"
 
 module FortCI
@@ -8,9 +9,13 @@ module FortCI
     def initialize
       @ui_root_url = ENV['UI_ROOT'] || 'http://localhost:3001'
       @api_root_url = ENV['API_ROOT'] || 'http://localhost:3000/api'
-      @database = YAML.load(File.new('./database.yml'))
-      @env = ENV['RAILS_ENV'] || ENV['RACK_ENV'] || ENV['ENV'] || 'development'
+      @database = symbolize_keys(load_config_file('./database.yml'))
+      @env = (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || ENV['ENV'] || 'development').to_sym
       @secret = ENV['SECRET_KEY_BASE'] || 'secret'
+    end
+
+    def database
+      @database[env]
     end
   end
 end

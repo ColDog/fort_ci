@@ -19,3 +19,9 @@ unless FortCI::Team.find(name: 'TestTeam')
 
   FortCI::DB[:user_teams].insert(user_id: user.id, team_id: team.id)
 end
+
+
+unless FortCI::Project.find(name: 'TestProject')
+  user = FortCI::User.find(email: 'colinwalker270@gmail.com')
+  FortCI::Project.create(name: 'TestProject', user_id: user.id)
+end

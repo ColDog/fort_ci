@@ -2,8 +2,9 @@ module FortCI
   class BaseSerializer
     attr_reader :object
 
-    def initialize(object)
+    def initialize(object, in_collection: false)
       @object = object
+      @in_collection = in_collection
     end
 
     def self.attributes(*attrs)
@@ -12,7 +13,7 @@ module FortCI
     end
 
     def self.collection(objects)
-      objects.map { |object| self.new(object) }
+      objects.map { |object| self.new(object, in_collection: true) }
     end
 
     def serializable_hash

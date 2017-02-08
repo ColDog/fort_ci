@@ -1,6 +1,10 @@
 module FortCI
   module RenderHelper
 
+    def meta
+      @meta ||= {}
+    end
+
     def render(args)
       status = args[:status] || 200
 
@@ -26,6 +30,8 @@ module FortCI
       else
         result = serializable_resource(resource)
       end
+
+      result.merge!(meta: meta)
       JSON.generate(result)
     end
 

@@ -5,6 +5,13 @@ module FortCI
   module AuthHelper
     include SerializationHelper
 
+    def add_entity_to_meta
+      meta[:entity] = {
+          type: current_entity.class.name.split("::")[-1],
+          id: current_entity.id,
+      }
+    end
+
     def current_user
       @current_user ||= FortCI::User.find(id: session[:user_id])    if session[:user_id]
       @current_user ||= FortCI::User.find(id: auth_token[:user_id]) if auth_token[:user_id]
@@ -22,7 +29,9 @@ module FortCI
     end
 
     def protected!
-      unless current_user
+      if current_user
+        add_entity_to_meta
+      else
         render json: {error: 'Unauthorized', status: 401}, status: 401
       end
     end

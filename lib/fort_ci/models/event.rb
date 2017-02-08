@@ -16,7 +16,15 @@ module FortCI
       end
 
       pipeline_definitions.each do |pipeline_def|
-      #   todo
+        if pipeline_def.triggered_by?(self)
+          Pipeline.create(
+              project: project,
+              definition: pipeline_def.name,
+              stage: nil,
+              status: 'PENDING',
+              event: data,
+          )
+        end
       end
     end
 

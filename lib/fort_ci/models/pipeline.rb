@@ -1,4 +1,5 @@
 require "fort_ci/db"
+require "fort_ci/models/event"
 require "fort_ci/helpers/serialization_helper"
 require "sequel"
 
@@ -10,7 +11,7 @@ module FortCI
     serialize_attributes :json, :event
     serialize_attributes :json, :variables
     one_to_many :jobs
-    many_to_one :pipeline
+    many_to_one :project
 
     def definition_class
       @definition_class ||= FortCI.pipeline_definitions[definition]

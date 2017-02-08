@@ -3,6 +3,7 @@ require "sequel"
 
 module FortCI
   class Team < Sequel::Model
-    many_to_one :users
+    one_to_many :projects
+    many_to_many :users, left_key: :team_id, right_key: :user_id, join_table: :user_teams
   end
 end

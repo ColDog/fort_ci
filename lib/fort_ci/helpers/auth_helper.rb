@@ -11,6 +11,16 @@ module FortCI
       @current_user
     end
 
+    def current_entity
+      @current_entity ||= begin
+        if params[:team_id]
+          current_user.find_team!(params[:team_id])
+        else
+          current_user
+        end
+      end
+    end
+
     def protected!
       unless current_user
         render json: {error: 'Unauthorized', status: 401}, status: 401

@@ -1,5 +1,6 @@
 require "fort_ci/db"
 require "fort_ci/models/team"
+require "fort_ci/models/project"
 require "fort_ci/clients/github_client"
 require "fort_ci/clients/mock_client"
 require "sequel"
@@ -43,6 +44,14 @@ module FortCI
           MockClient.new(username, token)
         end
       end
+    end
+    
+    def find_team!(pk)
+      teams_dataset.with_pk!(pk)
+    end
+
+    def projects
+      Project.where('user_id = ? OR team_id IN ?', id, teams_dataset.select(:id).map(:id))
     end
 
   end

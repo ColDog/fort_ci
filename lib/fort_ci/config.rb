@@ -13,6 +13,7 @@ module FortCI
       @database = symbolize_keys(load_config_file('./database.yml'))
       @env = (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || ENV['ENV'] || 'development').to_sym
       @secret = ENV['SECRET_KEY_BASE'] || 'secret'
+      @log_sql = false
       
       @github_credentials = {
         key: ENV['GITHUB_KEY'],
@@ -23,7 +24,7 @@ module FortCI
 
     def database
       if log_sql
-        (@database[env] || {}).merge(logger: logger)
+        (@database[env] || {}).merge(logger: FortCI.logger)
       else
         @database[env] || {}
       end

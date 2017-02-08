@@ -31,6 +31,10 @@ def user
   @test_user ||= FortCI::User.find(email: 'colinwalker270@gmail.com')
 end
 
+def team
+  @test_team ||= FortCI::Team.find(name: 'TestTeam')
+end
+
 def get_as_user(path, opts={}, target_user=user)
   get path, opts, 'rack.session' => {user_id: target_user.id}
 end

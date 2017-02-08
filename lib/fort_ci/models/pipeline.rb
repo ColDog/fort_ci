@@ -1,6 +1,7 @@
 require "fort_ci/db"
 require "fort_ci/models/event"
 require "fort_ci/helpers/serialization_helper"
+require "fort_ci/jobs/pipeline_stage_job"
 require "sequel"
 
 module FortCI
@@ -23,6 +24,15 @@ module FortCI
 
     def event
       @event ||= Event.new(symbolize_keys(super))
+    end
+
+    def run
+      PipelineStageJob.enqueue self
+    end
+
+    def after_create
+      super
+      run
     end
 
   end

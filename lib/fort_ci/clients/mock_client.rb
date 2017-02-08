@@ -14,12 +14,23 @@ module FortCI
     end
 
     def repo(repo)
-      {
-          id: rand(1000..100000),
-          name: repo,
-          owner: 'coldog',
-          owner_id: rand(1000..100000),
-      }
+      if repo == "TestTeam"
+        {
+            id: rand(1000..100000),
+            name: repo,
+            owner: 'coldog',
+            owner_id: '123456', # same as seeder
+            owner_type: :team, # or :user
+        }
+      else
+        {
+            id: rand(1000..100000),
+            name: repo,
+            owner: 'coldog',
+            owner_id: '10747761', # same as seeder
+            owner_type: :user, # or :user
+        }
+      end
     end
 
     def latest_commit(repo)

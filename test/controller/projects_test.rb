@@ -16,4 +16,14 @@ describe FortCI::ProjectsController do
   it "can get a project" do
     get_as_user "/projects/#{user.projects.first.id}"
   end
+
+  it "can create a project" do
+    post_as_user "/projects", name: 'TestTeam'
+    assert last_response.ok?, last_response.status
+  end
+
+  it "can update a project" do
+    patch_as_user "/projects/#{user.projects.first.id}", project: {enabled: false}
+    assert last_response.ok?, last_response.status
+  end
 end

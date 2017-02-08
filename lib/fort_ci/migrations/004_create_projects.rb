@@ -6,7 +6,6 @@ Sequel.migration do
       foreign_key :team_id, :teams, null: true
       String :name
       String :repo_provider
-      String :repo_name
       String :repo_id
       String :enabled_pipelines, text: true
       Boolean :enabled, default: false

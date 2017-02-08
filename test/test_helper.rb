@@ -46,6 +46,10 @@ def post_as_user(path, opts={}, target_user=user)
   post path, opts, 'rack.session' => {user_id: target_user.id}
 end
 
+def patch_as_user(path, opts={}, target_user=user)
+  patch path, opts, 'rack.session' => {user_id: target_user.id}
+end
+
 def response
   last_response
 end

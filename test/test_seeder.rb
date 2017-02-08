@@ -25,3 +25,9 @@ unless FortCI::Project.find(name: 'TestProject')
   user = FortCI::User.find(email: 'colinwalker270@gmail.com')
   FortCI::Project.create(name: 'TestProject', user_id: user.id, repo_owner_id: user.provider_id)
 end
+
+
+class TestPipeline < FortCI::PipelineDefinition
+end
+
+FortCI.register_pipeline_definition(TestPipeline)

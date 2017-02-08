@@ -9,6 +9,8 @@ module FortCI
 
     include SerializationHelper
     include RunnerClient
+
+    unrestrict_primary_key
     plugin :serialization
 
     serialize_attributes :json, :spec

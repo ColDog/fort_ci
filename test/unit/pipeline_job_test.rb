@@ -11,5 +11,6 @@ describe FortCI::PipelineStageJob do
 
     job = FortCI::PipelineStageJob.new(pipeline_id: pipeline.id)
     job.perform
+    job.on_success
   end
 end

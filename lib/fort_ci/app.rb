@@ -7,6 +7,8 @@ require "fort_ci/config"
 
 require "fort_ci/controllers"
 
+require "fort_ci/helpers/render"
+
 module FortCI
   class App < Sinatra::Base
 
@@ -21,11 +23,12 @@ module FortCI
     end
 
     register Controllers::Auth
+    helpers Helpers::Render
 
     before { env['PATH_INFO'].sub!(/^\/api\//, '/') }
 
     get "/" do
-      halt 200
+      render json: {name: "FortCI", version: FortCI::VERSION}
     end
 
   end

@@ -17,6 +17,10 @@ module FortCI
     end
 
     def serializable_hash
+      if @object == nil
+        return nil
+      end
+
       hash = {}
       self.class.attributes.each do |attr|
         if self.respond_to?(attr)

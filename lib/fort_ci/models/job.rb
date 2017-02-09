@@ -17,15 +17,16 @@ module FortCI
     many_to_one :pipeline
 
     def self.pop(runner)
-      where(status: 'QUEUED', runner: nil).limit(1).update(runner: runner, status: 'PROCESSING').first
+      where(status: 'QUEUED', runner: nil).limit(1).update(runner: runner, status: 'PROCESSING')
+      find(runner: runner, status: 'PROCESSING')
     end
 
     def self.reject(runner, id)
-      where(key: id, runner: runner).update(runner: nil, status: 'QUEUED')
+      where(id: id, runner: runner).update(runner: nil, status: 'QUEUED')
     end
 
     def self.update_status(runner, id, status)
-      where(key: id, runner: runner).update(status: status.to_s.upcase)
+      where(id: id, runner: runner).update(status: status.to_s.upcase)
     end
 
     def after_save

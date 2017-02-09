@@ -28,6 +28,10 @@ module FortCI
       end
     end
 
+    def current_runner
+      @current_runner ||= auth_token[:runner] if auth_token
+    end
+
     def protected!
       if current_user
         add_entity_to_meta
@@ -36,11 +40,17 @@ module FortCI
       end
     end
 
+    def protected_runner!
+      unless current_runner
+        render json: {error: 'Unauthorized', status: 401}, status: 401
+      end
+    end
+
     def auth_token
       @auth_token = begin
         token = env['HTTP_AUTHORIZATION'] ? env['HTTP_AUTHORIZATION'].split(' ')[1] : nil
         if token
-          payload = JWT.decode(token, Config.secret, true, algorithm: 'HS256').try(:[], 0)
+          payload, _ = JWT.decode(token, FortCI.config.secret, true, algorithm: 'HS256')
           symbolize_keys(payload) if payload
         else
           {}

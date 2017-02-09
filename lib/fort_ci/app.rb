@@ -27,6 +27,7 @@ module FortCI
     register UsersController
     register TeamsController
     register ProjectsController
+    register RunnerController
 
     helpers RenderHelper
     helpers AuthHelper

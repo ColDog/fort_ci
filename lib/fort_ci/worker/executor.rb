@@ -7,7 +7,7 @@ module FortCI
   module Worker
     class Executor
       include FortCI::SerializationHelper
-      attr_accessor :id, :jobs_per_run, :max_attempts, :poll_interval, :job_timeout
+      attr_accessor :id, :jobs_per_run, :max_attempts, :poll_interval, :job_timeout, :logging_enabled
 
       def initialize(queue_name: nil)
         @jobs_per_run = 10
@@ -17,6 +17,7 @@ module FortCI
         @poll_interval = 5
         @job_timeout = 60
         @queue_name = queue_name || 'default'
+        @logging_enabled = FortCI.config.env != :test
       end
 
       def enqueue(data: nil, job_class: nil, run_at: Time.now, queue: nil, priority: nil)
@@ -68,7 +69,7 @@ module FortCI
         begin
           while true
 
-            logger.debug("Polling")
+            logger.debug("Polling") if @logging_enabled
 
             t1 = Time.now
             failures = 0
@@ -89,24 +90,24 @@ module FortCI
             t2 = Time.now
 
             if failures + successes > 0
-              logger.info("Performed #{failures + successes} jobs in #{t2 - t1} seconds")
+              logger.info("Performed #{failures + successes} jobs in #{t2 - t1} seconds") if @logging_enabled
             end
 
             return if number_to_run && number_to_run <= 0
             sleep(poll_interval)
           end
         rescue Exception => e
-          logger.warn("Exiting due to #{e}")
+          logger.warn("Exiting due to #{e}") if @logging_enabled
           return
         ensure
-          logger.info("Unlocking")
+          logger.info("Unlocking") if @logging_enabled
           unlock
         end
 
       end
 
       def run_job(job)
-        logger.info("Performing #{job.job_class}.#{job.id} attempts=#{job.attempts} priority=#{job.priority} run_at=#{job.run_at}")
+        logger.info("Performing #{job.job_class}.#{job.id} attempts=#{job.attempts} priority=#{job.priority} run_at=#{job.run_at}") if @logging_enabled
 
         handler = nil
         begin
@@ -119,17 +120,17 @@ module FortCI
           end
 
           job.destroy
-          logger.info("Successful #{job.job_class}.#{job.id}")
+          logger.info("Successful #{job.job_class}.#{job.id}") if @logging_enabled
           return true
 
         rescue Exception => e
           handler.on_failure if handler && handler.respond_to?(:on_failure)
 
-          logger.info("Failed #{job.job_class}.#{job.id} err: #{e.message}")
+          logger.info("Failed #{job.job_class}.#{job.id} err: #{e.message}") if @logging_enabled
           puts e.backtrace
 
           if job.attempts + 1 > max_attempts
-            logger.info("Failed #{job.job_class}.#{job.id} Reached max attempts")
+            logger.info("Failed #{job.job_class}.#{job.id} Reached max attempts") if @logging_enabled
             job.destroy
           else
             job.set_error(e)

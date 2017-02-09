@@ -5,5 +5,7 @@ require "fort_ci/models"
 require "fort_ci/worker"
 require "fort_ci/app"
 
+require "fort_ci/pipelines/standard_pipeline"
+
 module FortCI
 end

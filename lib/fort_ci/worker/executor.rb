@@ -135,6 +135,7 @@ module FortCI
             job.set_error(e)
           end
 
+          job.update(locked_by: nil)
           return false
         end
       end

@@ -22,5 +22,9 @@ module FortCI
           .join(:projects, id: :project_id)
           .where('projects.team_id = ?', id)
     end
+
+    def username
+      name
+    end
   end
 end

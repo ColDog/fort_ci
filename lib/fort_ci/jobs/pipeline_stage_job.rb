@@ -57,7 +57,7 @@ module FortCI
       begin
         definition.send(this_stage)
       rescue Exception => e
-        pipeline.update!(status: 'ERROR', error: e.message)
+        pipeline.update(status: 'ERROR', error: e.message)
         raise e
       end
     end

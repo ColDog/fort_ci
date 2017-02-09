@@ -34,7 +34,10 @@ module FortCI
     end
 
     def latest_commit(repo)
-      "#{rand(1000..100000)}"
+      {
+          sha: "asdfasdfa",
+          branch: "test/test",
+      }
     end
 
     def branches(repo)
@@ -45,7 +48,7 @@ module FortCI
     end
 
     def file(repo, path)
-      "Some File"
+      "setup:\n- echo 'setup'\ntest:\n- echo 'test'\n"
     end
 
     def register_webhooks(repo)

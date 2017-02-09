@@ -29,6 +29,10 @@ module FortCI
       JSON.parse(res.body)
     end
 
+    def get_remote_output(url)
+      JSON.parse(Faraday.new(url: url).get.body)
+    end
+
     def conn
       @conn = Faraday.new(url: "http://#{runner}") do |faraday|
         faraday.request  :url_encoded             # form-encode POST params

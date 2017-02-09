@@ -10,8 +10,8 @@ module FortCI
           branch: object.branch,
           commit: object.commit,
           provider: object.project.repo_provider,
-          username: object.project.repo_owner_name,
-          auth_token: object.project.auth_token,
+          owner: object.project.repo_owner_name,
+          token: object.project.auth_token,
           repo_url: object.project.repo_url,
       }
     end

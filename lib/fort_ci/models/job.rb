@@ -26,8 +26,8 @@ module FortCI
       where(id: id, runner: runner).update(runner: nil, status: 'QUEUED')
     end
 
-    def self.update_status(runner, id, status)
-      where(id: id, runner: runner).update(status: status.to_s.upcase)
+    def self.update_status(runner, id, status, output_url=nil)
+      where(id: id, runner: runner).update(status: status.to_s.upcase, output_url: output_url)
     end
 
     def after_save
@@ -54,10 +54,10 @@ module FortCI
     def output
       if status == 'QUEUED'
         nil
-      elsif status == 'PROCESSING'
-        runner_output
+      elsif output_url
+        get_remote_output output_url
       else
-        # todo: look in permanent storage
+        runner_output
       end
     end
 

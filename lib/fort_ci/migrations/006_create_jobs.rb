@@ -9,6 +9,7 @@ Sequel.migration do
       String :commit
       String :branch
       String :runner
+      String :output_url
       String :spec, text: true
     end
   end

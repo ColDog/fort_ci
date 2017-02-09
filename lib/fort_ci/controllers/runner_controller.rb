@@ -12,7 +12,7 @@ module FortCI
     end
 
     post "/runner/job_status?" do
-      Job.update_status(current_runner, params[:id], params[:status])
+      Job.update_status(current_runner, params[:id], params[:status], params[:output_url])
       render json: {ok: true}
     end
 

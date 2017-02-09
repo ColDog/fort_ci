@@ -10,4 +10,10 @@ if cmd == "migrate"
   Sequel.extension :migration
   # TODO: How will this work when the gem is deployed somewhere else?
   Sequel::Migrator.run(FortCI::DB, "lib/fort_ci/migrations")
+elsif cmd == "work"
+  FortCI::Worker.executor.run
+elsif cmd == "serve"
+  Rack::Handler.get('puma').run FortCI::App.new
+else
+  puts "command not recognized: #{cmd}"
 end

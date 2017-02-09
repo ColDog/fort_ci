@@ -12,7 +12,14 @@ module FortCI
 
     def pipelines
       Pipeline
-          .join(:projects, id: :category_id)
+          .join(:projects, id: :project_id)
+          .where('projects.team_id = ?', id)
+    end
+
+    def jobs
+      Job
+          .join(:pipelines, id: :pipeline_id)
+          .join(:projects, id: :project_id)
           .where('projects.team_id = ?', id)
     end
   end

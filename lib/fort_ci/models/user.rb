@@ -9,6 +9,7 @@ require "sequel"
 module FortCI
   class User < Sequel::Model
     many_to_many :teams, left_key: :user_id, right_key: :team_id, join_table: :user_teams
+    one_to_many  :projects
 
     def self.from_omniauth(auth)
       new_user = false
@@ -52,13 +53,18 @@ module FortCI
     end
 
     def projects
-      Project.where('user_id = ? OR team_id IN ?', id, teams_dataset.select(:id).map(:id))
+      projects_dataset
     end
 
     def pipelines
-      Pipeline
-          .join(:projects, id: :category_id)
-          .where('projects.user_id = ? OR projects.team_id IN ?', id, teams_dataset.select(:id).map(:id))
+      Pipeline.join(:projects, id: :project_id).where('projects.user_id = ?', id)
+    end
+
+    def jobs
+      Job
+          .join(:pipelines, id: :pipeline_id)
+          .join(:projects, id: :project_id)
+          .where('projects.user_id = ?', id)
     end
 
   end

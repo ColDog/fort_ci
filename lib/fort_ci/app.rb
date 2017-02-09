@@ -28,6 +28,8 @@ module FortCI
     register TeamsController
     register ProjectsController
     register RunnerController
+    register PipelinesController
+    register JobsController
 
     helpers RenderHelper
     helpers AuthHelper

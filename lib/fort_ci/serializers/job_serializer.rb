@@ -3,7 +3,7 @@ require "fort_ci/serializers/runner_job_serializer"
 
 module FortCI
   class JobSerializer < BaseSerializer
-    attributes :id, :project_id, :pipeline_id, :status, :commit, :branch, :runner
+    attributes :id, :project_id, :pipeline_id, :status, :commit, :branch, :output_url, :runner
 
     def project_id
       object.project.id

@@ -58,5 +58,13 @@ module FortCI
       end
     end
 
+    def owner
+      user || team
+    end
+
+    def branches
+      owner.client.branches(name)
+    end
+
   end
 end

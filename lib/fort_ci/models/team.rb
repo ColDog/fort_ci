@@ -9,5 +9,11 @@ module FortCI
     def client
       users.first.client
     end
+
+    def pipelines
+      Pipeline
+          .join(:projects, id: :category_id)
+          .where('projects.team_id = ?', id)
+    end
   end
 end

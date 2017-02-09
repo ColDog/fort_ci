@@ -22,12 +22,12 @@ module FortCI
     patch "/projects/:id/?" do
       project = current_entity.projects.with_pk!(params[:id])
       project.update(params[:project])
-      json ProjectSerializer.new(project), root: :project
+      render json: ProjectSerializer.new(project), root: :project
     end
 
-    # get "/projects/:id/branches/?" do
-    #   json current_entity.projects.find(params[:id]).branches, root: :jobs
-    # end
+    get "/projects/:id/branches/?" do
+      render json: current_entity.projects.with_pk!(params[:id]).branches, root: :branches
+    end
 
   end
 end

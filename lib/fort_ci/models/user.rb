@@ -1,6 +1,7 @@
 require "fort_ci/db"
 require "fort_ci/models/team"
 require "fort_ci/models/project"
+require "fort_ci/models/pipeline"
 require "fort_ci/clients/github_client"
 require "fort_ci/clients/mock_client"
 require "sequel"
@@ -52,6 +53,12 @@ module FortCI
 
     def projects
       Project.where('user_id = ? OR team_id IN ?', id, teams_dataset.select(:id).map(:id))
+    end
+
+    def pipelines
+      Pipeline
+          .join(:projects, id: :category_id)
+          .where('projects.user_id = ? OR projects.team_id IN ?', id, teams_dataset.select(:id).map(:id))
     end
 
   end

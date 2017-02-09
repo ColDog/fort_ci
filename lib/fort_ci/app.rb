@@ -40,7 +40,6 @@ module FortCI
     helpers RenderHelper
     helpers AuthHelper
 
-    before { env['PATH_INFO'].sub!(/^\/api\//, '/') }
     before { body_parser }
 
     get "/" do

@@ -57,7 +57,10 @@ module FortCI
     end
 
     def pipelines
-      Pipeline.join(:projects, id: :project_id).where('projects.user_id = ?', id)
+      Pipeline
+          .join(:projects, id: :project_id)
+          .where('projects.user_id = ?', id)
+          .select(Sequel.lit('pipelines.*'))
     end
 
     def jobs
@@ -65,6 +68,11 @@ module FortCI
           .join(:pipelines, id: :pipeline_id)
           .join(:projects, id: :project_id)
           .where('projects.user_id = ?', id)
+          .select(Sequel.lit('jobs.*'))
+    end
+
+    def to_s
+      "User(#{id})"
     end
 
   end

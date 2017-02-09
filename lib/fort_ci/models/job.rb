@@ -15,6 +15,7 @@ module FortCI
 
     serialize_attributes :json, :spec
     many_to_one :pipeline
+    many_to_one :project
 
     def self.pop(runner)
       where(status: 'QUEUED', runner: nil).limit(1).update(runner: runner, status: 'PROCESSING')
@@ -35,7 +36,7 @@ module FortCI
     end
 
     def project
-      pipeline.project
+      super || pipeline.project
     end
 
     def spec

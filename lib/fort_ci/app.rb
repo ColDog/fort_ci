@@ -25,6 +25,8 @@ module FortCI
       )
     end
 
+    before { FortCI.logger.info("#{request.request_method} #{request.path} params=#{params} user=#{current_user} runner=#{current_runner} entity=#{current_entity}") }
+
     register AuthController
     register UsersController
     register TeamsController

@@ -42,28 +42,21 @@ module FortCI
       pipeline.stage.to_sym
     end
 
-    def create_job(key: nil, project: nil, scm: nil, spec: nil)
-      project = self.project unless project
-
+    def create_job(id: nil, project: nil, scm: nil, spec: nil)
       scm = {} if scm.nil?
-      if project
-        scm[:owner] = project.owner.username
-        scm[:name] = project.name
-        scm[:provider] = project.repo_provider
-      end
 
       @job_creation_idx += 1
-      key = "#{pipeline.definition}.#{pipeline.id}.#{stage}-#{@job_creation_idx}" unless key
+      id = "#{pipeline.definition}.#{pipeline.id}.#{stage}-#{@job_creation_idx}" unless id
 
-      puts "creating job!!!"
       Job.create(
+          project: project,
           pipeline: pipeline,
           pipeline_stage: stage,
           status: 'QUEUED',
-          spec: spec.merge(repo: scm),
+          spec: spec,
           commit: scm[:commit],
           branch: scm[:branch],
-          id: key,
+          id: id,
       )
     end
 

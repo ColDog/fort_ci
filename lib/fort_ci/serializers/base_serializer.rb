@@ -16,13 +16,17 @@ module FortCI
       objects.map { |object| self.new(object, in_collection: true) }
     end
 
+    def attributes
+      self.class.attributes
+    end
+
     def serializable_hash
       if @object == nil
         return nil
       end
 
       hash = {}
-      self.class.attributes.each do |attr|
+      attributes.each do |attr|
         if self.respond_to?(attr)
           hash[attr] = self.send(attr)
         else

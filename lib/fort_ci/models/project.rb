@@ -67,12 +67,33 @@ module FortCI
       super
       # owner.client.remove_webhooks(name)
     end
+
     def owner
       user || team
     end
 
     def branches
       owner.client.branches(name)
+    end
+
+    def repo_owner_name
+      owner.username
+    end
+
+    def auth_token
+      if user
+        user.token
+      elsif team
+        team.users.first.token
+      end
+    end
+
+    def repo_url
+      if repo_provider == 'github'
+        "https://#{auth_token}@github.com/#{repo_owner_name}/#{name}.git"
+      else
+        raise("Provider #{repo_provider} not supported")
+      end
     end
 
   end

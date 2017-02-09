@@ -26,5 +26,9 @@ module FortCI
     def username
       name
     end
+
+    def to_s
+      "User(#{name})"
+    end
   end
 end

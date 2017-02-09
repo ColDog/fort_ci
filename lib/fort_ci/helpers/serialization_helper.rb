@@ -21,5 +21,13 @@ module FortCI
       YAML.load(ERB.new(File.read(filename)).result)
     end
 
+    def body_parser
+      if request.body.size > 0 && request.content_type == 'application/json'
+        request.body.rewind
+        self.params = JSON.parse(request.body.read)
+      end
+      self.params = symbolize_keys(params)
+    end
+
   end
 end

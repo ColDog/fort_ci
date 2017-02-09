@@ -23,6 +23,7 @@ module FortCI
             name: res['source']['name'],
             owner: res['source']['owner']['login'],
             owner_id: res['source']['owner']['id'],
+            owner_type: :team,
         }
       else
         {
@@ -30,6 +31,7 @@ module FortCI
             name: res['name'],
             owner: res['owner']['login'],
             owner_id: res['owner']['id'],
+            owner_type: :user,
         }
       end
     end
@@ -61,7 +63,7 @@ module FortCI
       Base64.decode64(res['content']) if res['content']
     end
 
-    def register_webhook(repo)
+    def register_webhooks(repo)
       post_json("/repos/#{@username}/#{repo}/hooks", {
           name: 'web',
           active: true,

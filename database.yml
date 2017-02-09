@@ -3,5 +3,6 @@ test:
   database: tmp/test.db
 
 development:
-  adapter: sqlite
-  database: tmp/dev.db
+  adapter: mysql2
+  database: fortci_dev
+  user: root

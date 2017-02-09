@@ -48,7 +48,7 @@ module FortCI
       "Some File"
     end
 
-    def register_webhook(repo)
+    def register_webhooks(repo)
       true
     end
 

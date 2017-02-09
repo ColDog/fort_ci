@@ -9,9 +9,11 @@ require "fort_ci/controllers"
 
 require "fort_ci/helpers/render_helper"
 require "fort_ci/helpers/auth_helper"
+require "fort_ci/helpers/serialization_helper"
 
 module FortCI
   class App < Sinatra::Base
+    include SerializationHelper
 
     use Rack::Session::Cookie, secret: FortCI.config.secret
     use OmniAuth::Builder do
@@ -31,11 +33,13 @@ module FortCI
     register PipelinesController
     register PipelineDefinitionsController
     register JobsController
+    register EventsController
 
     helpers RenderHelper
     helpers AuthHelper
 
     before { env['PATH_INFO'].sub!(/^\/api\//, '/') }
+    before { body_parser }
 
     get "/" do
       render json: {name: "FortCI", version: FortCI::VERSION}

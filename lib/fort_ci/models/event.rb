@@ -5,7 +5,13 @@ module FortCI
     def initialize(data={})
       @data = data
       @name = data[:name]
-      @project = data[:project_id] ? Project.find(id: data[:project_id]) : nil
+
+      if data[:project_id]
+        @project = Project.find(id: data[:project_id])
+      elsif data[:project]
+        @project = data.delete(:project)
+        @data[:project_id] = @project.id
+      end
     end
 
     def execute

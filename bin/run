@@ -13,7 +13,7 @@ if cmd == "migrate"
 elsif cmd == "work"
   FortCI::Worker.executor.run
 elsif cmd == "serve"
-  Rack::Handler.get('puma').run FortCI::App.new
+  Rack::Handler.default.run FortCI::App.new, Port: 3000, Bind: '0.0.0.0'
 else
   puts "command not recognized: #{cmd}"
 end

@@ -15,9 +15,8 @@ module FortCI
       render json: PipelineDefinitionSerializer.new(FortCI.pipeline_definitions[params[:name]]), root: :pipeline_definition
     end
 
-    post "/pipeline_definitions/?" do
-      # save and reload
-      render json: PipelineDefinitionSerializer.new(FortCI.pipeline_definitions[params[:name]]), root: :pipeline_definition
-    end
+    # post "/pipeline_definitions/?" do
+    #   render json: PipelineDefinitionSerializer.new(FortCI.pipeline_definitions[params[:name]]), root: :pipeline_definition
+    # end
   end
 end

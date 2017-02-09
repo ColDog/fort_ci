@@ -12,7 +12,7 @@ module FortCI
     end
 
     post "/projects/?" do
-      json Project.create_for_entity(current_entity, params[:name]), root: :project
+      render json: ProjectSerializer.new(Project.create_for_entity(current_entity, params[:name])), root: :project
     end
 
     get "/projects/:id/?" do

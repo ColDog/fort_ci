@@ -5,7 +5,7 @@ module FortCI
   module JobsController
     extend Sinatra::Extension
 
-    before("/projects/?*") { protected! }
+    before("/jobs/?*") { protected! }
 
     get "/jobs/?" do
       render json: JobSerializer.collection(current_entity.jobs), root: :jobs

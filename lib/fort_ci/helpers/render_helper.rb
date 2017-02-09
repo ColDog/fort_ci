@@ -31,7 +31,7 @@ module FortCI
         result = serializable_resource(resource)
       end
 
-      result.merge!(meta: meta)
+      result.merge!(meta: meta) if meta.any?
       JSON.generate(result)
     end
 

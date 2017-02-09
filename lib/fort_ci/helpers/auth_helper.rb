@@ -32,6 +32,10 @@ module FortCI
       @current_runner ||= auth_token[:runner] if auth_token
     end
 
+    def auth_token_for(user)
+      JWT.encode({user_id: user.id}, FortCI.config.secret)
+    end
+
     def protected!
       if current_user
         add_entity_to_meta

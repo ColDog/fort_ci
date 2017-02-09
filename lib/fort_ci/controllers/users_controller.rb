@@ -10,5 +10,9 @@ module FortCI
     get "/users/current/?" do
       render json: UserSerializer.new(current_user), root: :user
     end
+
+    get "/users/auth_token/?" do
+      render json: {jwt: auth_token_for(current_user)}
+    end
   end
 end

@@ -19,7 +19,7 @@ module FortCI
       repo = entity.client.repo(name)
       project = new({
           name: name,
-          repo_provider: user.provider,
+          repo_provider: entity.provider,
           repo_id: repo[:id],
           repo_owner_id: repo[:owner_id],
           enabled: true,
@@ -58,6 +58,15 @@ module FortCI
       end
     end
 
+    def after_create
+      super
+      # owner.client.register_webhooks(name)
+    end
+
+    def after_destroy
+      super
+      # owner.client.remove_webhooks(name)
+    end
     def owner
       user || team
     end

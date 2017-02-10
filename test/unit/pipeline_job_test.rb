@@ -3,7 +3,7 @@ describe FortCI::PipelineStageJob do
     pipeline = FortCI::Pipeline.create(
         project: user.projects.first,
         variables: {name: 'testing'},
-        definition: 'StandardPipeline',
+        definition: 'FortCI::StandardPipelineDefinition',
         stage: nil,
         status: 'PENDING',
         event: {project_id: user.projects.first.id},

@@ -91,8 +91,6 @@ module FortCI
     def repo_url
       if repo_provider == 'github'
         "https://#{auth_token}@github.com/#{repo_owner_name}/#{name}.git"
-      else
-        raise("Provider #{repo_provider} not supported")
       end
     end
 

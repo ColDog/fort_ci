@@ -15,7 +15,7 @@ module FortCI
     many_to_one :project
 
     def definition_class
-      @definition_class ||= FortCI.pipeline_definitions[definition]
+      FortCI.pipeline_definitions[definition] || raise("Definition #{definition} does not exist")
     end
 
     def variables

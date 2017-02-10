@@ -3,6 +3,6 @@ describe FortCI::Event  do
     initial = FortCI::Pipeline.count
     event = FortCI::Event.new(project_id: FortCI::Project.first.id, name: 'git::push')
     event.execute
-    assert_equal initial + 2, FortCI::Pipeline.count
+    assert_equal initial + 1, FortCI::Pipeline.count
   end
 end

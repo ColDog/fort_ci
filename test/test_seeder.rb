@@ -27,7 +27,7 @@ unless FortCI::Project.find(name: 'TestProject')
 end
 
 
-class TestPipeline < FortCI::PipelineDefinition
-end
-
-FortCI.register_pipeline_definition(TestPipeline)
+# class TestPipeline < FortCI::PipelineDefinition
+# end
+#
+# FortCI.register_pipeline_definition(TestPipeline)

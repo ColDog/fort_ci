@@ -16,7 +16,7 @@ builds:
         - DB_USER=dbuser
         - DB_PASS=pass
         - DB_NAME=fort_ci
-        - DB_ADAPTER=mysql
+        - DB_ADAPTER=mysql2
         - DB_HOST=db
     after:
       - docker logs app

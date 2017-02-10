@@ -1,6 +1,8 @@
 test:
-  adapter: sqlite
-  database: tmp/test.db
+  adapter: <%= ENV['DB_ADAPTER'] || 'sqlite' %>
+  database: <%= ENV['DB_NAME'] || 'test.db' %>
+  user: <%= ENV['DB_USER'] || '' %>
+  password: <%= ENV['DB_PASS'] || '' %>
 
 development:
   adapter: mysql2

@@ -5,6 +5,9 @@ require "fort_ci"
 
 cmd = ARGV[0]
 
+port = ENV['PORT'] || 3001
+bind = ENV['BIND'] || '0.0.0.0'
+
 if cmd == "migrate"
   require "sequel"
   Sequel.extension :migration
@@ -13,7 +16,7 @@ if cmd == "migrate"
 elsif cmd == "work"
   FortCI::Worker.executor.run
 elsif cmd == "serve"
-  Rack::Handler.default.run FortCI::App.new, Port: 3001, Bind: '0.0.0.0'
+  Rack::Handler.default.run FortCI::App.new, Port: port, Bind: bind
 else
   puts "command not recognized: #{cmd}"
 end

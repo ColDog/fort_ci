@@ -8,7 +8,7 @@ RUN gem install bundler --no-ri --no-rdoc
 
 COPY . .
 
-RUN bundle install --without development test
+RUN bundle install
 
 EXPOSE 3001
-CMD ["bin/cmd", "migrate", "&&", "bin/cmd", "serve"]
+CMD ["bin/run", "migrate", "&&", "bin/run", "serve"]

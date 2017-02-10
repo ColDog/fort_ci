@@ -13,6 +13,7 @@ module FortCI
 
           # services are copied directly
           spec[:services] = build[:services]
+          spec[:builds] = build[:builds]
 
           # turns each key into a section
           spec[:sections] = []

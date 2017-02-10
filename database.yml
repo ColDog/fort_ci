@@ -3,6 +3,7 @@ test:
   database: <%= ENV['DB_NAME'] || 'test.db' %>
   user: <%= ENV['DB_USER'] || '' %>
   password: <%= ENV['DB_PASS'] || '' %>
+  host: <%= ENV['DB_HOST'] || '127.0.0.1' %>
 
 development:
   adapter: mysql2
@@ -14,3 +15,4 @@ production:
   database: <%= ENV['DB_NAME'] %>
   user: <%= ENV['DB_USER'] %>
   password: <%= ENV['DB_PASS'] %>
+  host: <%= ENV['DB_HOST'] || '127.0.0.1' %>

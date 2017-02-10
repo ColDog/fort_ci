@@ -15,6 +15,8 @@ module FortCI
   class App < Sinatra::Base
     include SerializationHelper
 
+    before { env['PATH_INFO'].sub!(/^\/api\//, '/') }
+
     use Rack::Session::Cookie, secret: FortCI.config.secret
     use OmniAuth::Builder do
       provider(

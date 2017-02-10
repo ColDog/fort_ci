@@ -8,7 +8,12 @@ module FortCI
     before("/jobs/?*") { protected! }
 
     get "/jobs/?" do
-      render json: JobSerializer.collection(current_entity.jobs.limit(params[:limit] || 10).offset(params[:offset])), root: :jobs
+      results = current_entity.jobs
+                    .query(params)
+                    .limit(params[:limit] || 10)
+                    .offset(params[:offset])
+
+      render json: JobSerializer.collection(results), root: :jobs
     end
 
     get "/jobs/:id/?" do

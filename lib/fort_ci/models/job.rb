@@ -17,6 +17,17 @@ module FortCI
     many_to_one :pipeline
     many_to_one :project
 
+    dataset_module do
+      def query(params)
+        q = self
+        q = q.where(project_id: params[:project_id]) if params[:project_id]
+        q = q.where(pipeline_id: params[:pipeline_id]) if params[:pipeline_id]
+        q = q.where(status: params[:status]) if params[:status]
+        q = q.where('id LIKE ?', "%#{params[:id]}%") if params[:id]
+        q
+      end
+    end
+
     def self.pop(runner)
       where(status: 'QUEUED', runner: nil).limit(1).update(runner: runner, status: 'PROCESSING')
       find(runner: runner, status: 'PROCESSING')

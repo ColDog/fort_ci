@@ -17,7 +17,9 @@ builds:
         - DB_PASS=pass
         - DB_NAME=fort_ci
         - DB_ADAPTER=mysql
+        - DB_HOST=db
     after:
+      - docker logs app
       - docker exec -i app sh -c 'while ! curl -i localhost:3000; do sleep 3; echo \"waiting for api\"; done'
 
 services:

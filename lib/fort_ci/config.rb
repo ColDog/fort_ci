@@ -41,8 +41,8 @@ module FortCI
       @logger ||= Logger.new(STDOUT)
     end
 
-    def register_pipeline_definition(pipeline_definition)
-      pipeline_definitions[pipeline_definition.name] = pipeline_definition
+    def register_pipeline_definition(pipeline_definition, name=nil)
+      pipeline_definitions[name || pipeline_definition.name] = pipeline_definition
     end
 
     def pipeline_definitions

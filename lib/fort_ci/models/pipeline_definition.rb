@@ -8,6 +8,10 @@ module FortCI
       @job_creation_idx = 1
     end
 
+    def self.register(name=nil)
+      FortCI.register_pipeline_definition(self, name || self.name)
+    end
+
     def self.triggered_by?(event)
       true
     end

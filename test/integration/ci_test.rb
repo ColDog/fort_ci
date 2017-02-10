@@ -4,6 +4,7 @@ class DoubleJobPipeline < FortCI::PipelineDefinition
   include FortCI::PipelineHelpers::BasicJobHelper
   stage :first, description: 'Start 1 Basic Job', jobs: 1
   stage :second, description: 'Start 1 Basic Job', jobs: 1
+  register
 
   def self.triggered_by?(event)
     event.name == 'doublejobtest'
@@ -17,8 +18,6 @@ class DoubleJobPipeline < FortCI::PipelineDefinition
     create_default_job(basic_job_from_file)
   end
 end
-
-FortCI.register_pipeline_definition DoubleJobPipeline
 
 describe FortCI do
   it "can perform and queue jobs" do

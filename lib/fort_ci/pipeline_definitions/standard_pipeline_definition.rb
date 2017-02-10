@@ -4,6 +4,7 @@ module FortCI
   class StandardPipelineDefinition < FortCI::PipelineDefinition
     include PipelineHelpers::BasicJobHelper
     stage :first, description: 'Start 1 Basic Job', jobs: 1
+    register
 
     def first
       create_default_job(basic_job_from_file)
@@ -11,5 +12,3 @@ module FortCI
 
   end
 end
-
-FortCI.register_pipeline_definition FortCI::StandardPipelineDefinition

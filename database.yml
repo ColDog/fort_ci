@@ -6,9 +6,11 @@ test:
   host: <%= ENV['DB_HOST'] || '127.0.0.1' %>
 
 development:
-  adapter: mysql2
-  database: fortci_dev
-  user: root
+  adapter: <%= ENV['DB_ADAPTER'] || 'sqlite' %>
+  database: <%= ENV['DB_NAME'] || 'test.db' %>
+  user: <%= ENV['DB_USER'] || '' %>
+  password: <%= ENV['DB_PASS'] || '' %>
+  host: <%= ENV['DB_HOST'] || '127.0.0.1' %>
 
 production:
   adapter: <%= ENV['DB_ADAPTER'] %>

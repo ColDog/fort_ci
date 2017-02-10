@@ -1,6 +1,7 @@
 test:
-  - bundle install
-  - rake test
+  - docker logs app
+  - docker exec app bundle install
+  - docker exec app rake test
 
 after:
   - echo 'done'

@@ -13,8 +13,8 @@ module FortCI
       @database = symbolize_keys(load_config_file('./database.yml'))
       @env = (ENV['RAILS_ENV'] || ENV['RACK_ENV'] || ENV['ENV'] || 'development').to_sym
       @secret = ENV['SECRET_KEY_BASE'] || 'secret'
-      @log_sql = false
-      
+      @log_sql = !ENV['LOG_SQL'].nil?
+
       @github_credentials = {
         key: ENV['GITHUB_KEY'],
         secret: ENV['GITHUB_SECRET'],

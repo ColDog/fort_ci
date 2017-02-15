@@ -22,8 +22,11 @@ elsif cmd == "serve"
 elsif cmd == "start"
   require "sequel"
   Sequel.extension :migration
+
+  puts "migrating..."
   Sequel::Migrator.run(FortCI::DB, "lib/fort_ci/migrations")
 
+  puts "starting..."
   Rack::Handler.default.run FortCI::App.new, Port: port, Bind: bind
 else
   puts "command not recognized: #{cmd}"

@@ -12,4 +12,4 @@ COPY . .
 RUN bundle install
 
 EXPOSE 3001
-CMD ["bin/run", "migrate", "&&", "bin/run", "serve"]
+CMD ["bin/run", "start"]

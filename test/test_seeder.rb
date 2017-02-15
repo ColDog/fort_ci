@@ -1,3 +1,7 @@
+puts "user: #{FortCI::User.columns}"
+puts "team: #{FortCI::Team.columns}"
+puts "project: #{FortCI::Project.columns}"
+
 unless FortCI::User.find(email: 'colinwalker270@gmail.com')
   FortCI::User.create(
       name: 'Colin Walker',

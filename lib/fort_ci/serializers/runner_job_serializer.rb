@@ -2,7 +2,7 @@ require "fort_ci/serializers/base_serializer"
 
 module FortCI
   class RunnerJobSerializer < BaseSerializer
-    attributes :id, :repo, :builds, :services, :sections, :env
+    attributes :id, :repo, :build, :services, :commands
 
     def repo
       {
@@ -16,7 +16,7 @@ module FortCI
       }
     end
 
-    def builds
+    def build
       object.spec[:builds]
     end
 
@@ -24,12 +24,8 @@ module FortCI
       object.spec[:services]
     end
 
-    def sections
+    def commands
       object.spec[:sections]
-    end
-
-    def env
-      object.spec[:env]
     end
 
   end

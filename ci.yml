@@ -1,27 +1,3 @@
-test:
-  - docker logs app
-  - docker exec app bundle install
-  - docker exec app rake test
-
-after:
-  - echo 'done'
-
-builds:
-  - name: app
-    dockerfile: .
-    build_timeout: 300
-    docker:
-      name: app
-      env:
-        - DB_USER=dbuser
-        - DB_PASS=pass
-        - DB_NAME=fort_ci
-        - DB_ADAPTER=mysql2
-        - DB_HOST=db
-    after:
-      - docker logs app
-      - docker exec -i app sh -c 'while ! curl -i localhost:3000; do sleep 3; echo \"waiting for api\"; done'
-
 services:
   - name: db
     docker:
@@ -33,5 +9,32 @@ services:
         - MYSQL_ROOT_PASSWORD=pass
         - MYSQL_DATABASE=fort_ci
       after:
-        - docker logs db
-        - docker exec -i db /bin/bash -c 'while ! mysql -u root --password=pass -e "select 1" ; do sleep 2; echo "waiting for mysql" ; done'
+        - while ! mysql -u root --password=pass -e "select 1" ; do sleep 2; echo "waiting for mysql" ; done
+
+commands:
+  test:
+    - docker logs app
+    - docker exec app bundle install
+    - docker exec app rake test
+
+  after:
+    - echo 'done'
+
+  on_success:
+    - echo 'success'
+
+  on_failure:
+    - echo 'failure'
+
+build:
+  id: app
+  dockerfile: .
+  build_timeout: 300
+  env:
+    - DB_USER=dbuser
+    - DB_PASS=pass
+    - DB_NAME=fort_ci
+    - DB_ADAPTER=mysql2
+    - DB_HOST=db
+  after:
+    - while ! curl -i http://localhost:3001; do sleep 2; echo \"waiting for app\"; done

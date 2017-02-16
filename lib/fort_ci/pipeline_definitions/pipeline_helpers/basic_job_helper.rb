@@ -7,54 +7,61 @@ module FortCI
 
       def basic_job_from_file
         ci_file = project.owner.client.file(project.name, 'ci.yml')
-        if ci_file
-          spec = {}
-          build = symbolize_keys(YAML.load(ci_file))
+        return nil unless ci_file
 
-          # services are copied directly
-          spec[:services] = build[:services]
-          spec[:builds] = build[:builds]
+        spec = {}
+        build = symbolize_keys(YAML.load(ci_file))
 
-          # turns each key into a section
-          spec[:sections] = []
+        # services are copied directly
+        spec[:services] = build[:services]
+        spec[:build] = build[:build]
 
-          spec[:sections] << {
-              name: 'setup',
-              fail_on_err: true,
-              commands: build[:setup],
-              on_success: build[:on_success],
-              on_failure: build[:on_failure],
-          }
+        # turns each key into a section
+        spec[:commands] = []
 
-          spec[:sections] << {
-              name: 'test',
-              fail_on_err: true,
-              commands: build[:test],
-              on_success: build[:on_success],
-              on_failure: build[:on_failure],
-          }
+        cmds = spec[:commands]
 
-          spec[:sections] << {
-              name: 'after',
-              fail_on_err: true,
-              commands: build[:after],
-          }
-
-          spec
-        else
-          {
-              sections: [
-                  {
-                      name: 'test',
-                      fail_on_err: true,
-                      commands: [
-                          'echo "no ci.yml file found"',
-                          'exit 1',
-                      ],
-                  }
-              ]
+        cmds[:setup].each do |cmd|
+          spec[:commands] << {
+              id: :setup,
+              cmd: cmd,
+              target: :machine,
+              run_on_failure: false,
+              run_on_success: true,
           }
         end
+
+        cmds[:test].each do |cmd|
+          spec[:commands] << {
+              id: :test,
+              cmd: cmd,
+              target: :build,
+              run_on_failure: false,
+              run_on_success: true,
+          }
+        end
+
+        cmds[:on_success].each do |cmd|
+          spec[:commands] << {
+              id: :on_success,
+              cmd: cmd,
+              target: :machine,
+              run_on_failure: false,
+              run_on_success: true,
+          }
+        end
+
+        cmds[:on_failure].each do |cmd|
+          spec[:commands] << {
+              id: :on_failure,
+              cmd: cmd,
+              target: :machine,
+              run_on_failure: true,
+              run_on_success: false,
+          }
+        end
+
+        spec
       end
 
     end

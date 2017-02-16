@@ -47,7 +47,7 @@ describe FortCI::RunnerController do
     pipeline = FortCI::Pipeline.create(
         project: user.projects.first,
         variables: {name: 'testing'},
-        definition: 'BasicPipeline',
+        definition: 'FortCI::Pipelines::StandardDefinition',
         stage: nil,
         status: 'PENDING',
         event: {project_id: user.projects.first.id},
@@ -60,9 +60,6 @@ describe FortCI::RunnerController do
         commit: '1230001112',
         branch: 'test/123',
         runner: nil,
-        spec: {
-            name: 'testig',
-        },
     )
   end
 end

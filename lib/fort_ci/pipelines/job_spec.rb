@@ -58,16 +58,17 @@ module FortCI
       def validate!
       end
 
-      def spec
-        {
-            id: id,
-            version: FortCI::VERSION,
-            build: @build ? @build.spec : nil,
-            services: @services.reduce({}) { |h, (id, srvc)| h.merge(id => srvc.spec) },
-            commands: @commands.map { |cmd| cmd.spec },
-        }
+      def build_spec
+        @build ? @build.spec : nil
       end
 
+      def services_spec
+        @services.reduce({}) { |h, (id, srvc)| h.merge(id => srvc.spec) }
+      end
+
+      def commands_spec
+        @commands.map { |cmd| cmd.spec }
+      end
     end
 
     class CommandSpec

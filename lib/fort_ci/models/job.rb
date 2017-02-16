@@ -13,7 +13,7 @@ module FortCI
     unrestrict_primary_key
     plugin :serialization
 
-    serialize_attributes :json, :spec
+    serialize_attributes :json, :build, :services, :commands
     many_to_one :pipeline
     many_to_one :project
 

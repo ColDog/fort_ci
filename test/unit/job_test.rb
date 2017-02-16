@@ -18,8 +18,8 @@ describe FortCI::Job do
         commit: '1230001112',
         branch: 'test/123',
         runner: nil,
-        spec: {
-            name: 'testig',
+        build: {
+            dockerfile: 'test',
         },
     )
   end

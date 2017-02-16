@@ -10,7 +10,10 @@ Sequel.migration do
       String :branch
       String :runner
       String :output_url
-      String :spec, text: true
+      String :version
+      String :build, text: true
+      String :services, text: true
+      String :commands, text: true
     end
   end
 end

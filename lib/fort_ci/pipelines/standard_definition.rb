@@ -10,7 +10,10 @@ module FortCI
       register
 
       def first
-        create_job(basic_job_from_file)
+        job = basic_job_from_file
+        if job
+          create_job(job)
+        end
       end
 
     end

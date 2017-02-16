@@ -102,17 +102,57 @@ module FortCI
           @project = FortCI::Project.with_pk!(val)
         end
       end
+
+      def commit=(val)
+        @commit = val.to_s
+      end
+
+      def branch=(val)
+        @branch = val.to_s
+      end
+
+      def pull_request=(val)
+        raise ArgumentError, "Pull Request must be a Bool" unless [true, false, nil].include?(val)
+        @pull_request = val
+      end
     end
 
-    class ServiceSpec
+    class ContainerSpec
       attr_accessor :id, :image, :cmd, :entrypoint, :env, :after
       def initialize(opts={})
-        @id = opts[:id]
-        @image = opts[:image]
-        @cmd = opts[:cmd]
-        @entrypoint = opts[:entrypoint]
-        @env = opts[:env]
-        @after = opts[:after]
+        self.id = opts[:id]
+        self.image = opts[:image]
+        self.cmd = opts[:cmd]
+        self.entrypoint = opts[:entrypoint]
+        self.env = opts[:env]
+        self.after = opts[:after]
+      end
+
+      def id=(val)
+        @id = val.to_s
+      end
+
+      def image=(val)
+        @image = val.to_s
+      end
+
+      def cmd=(val)
+        @cmd = val.to_s
+      end
+
+      def entrypoint=(val)
+        @entrypoint = val.to_s
+      end
+
+      def env=(val)
+        val = val.map { |k, v| "#{k}=#{v}" }
+        raise ArgumentError, "Env must be a String array" unless val.is_a?(String) && val.all? { |v| v.is_a?(String) }
+        @env = val
+      end
+
+      def after=(val)
+        raise ArgumentError, "After must be a String array" unless val.is_a?(String) && val.all? { |v| v.is_a?(String) }
+        @after = val
       end
 
       def spec
@@ -120,17 +160,23 @@ module FortCI
       end
     end
 
-    class BuildSpec
-      attr_accessor :id, :dockerfile, :build_timeout, :image, :cmd, :entrypoint, :env, :after
+    class ServiceSpec < ContainerSpec
+    end
+
+    class BuildSpec < ContainerSpec
+      attr_accessor :dockerfile, :build_timeout
       def initialize(opts={})
-        @id = opts[:id]
-        @image = opts[:image]
         @dockerfile = opts[:dockerfile]
         @build_timeout = opts[:build_timeout]
-        @cmd = opts[:cmd]
-        @entrypoint = opts[:entrypoint]
-        @env = opts[:env]
-        @after = opts[:after]
+      end
+
+      def dockerfile=(val)
+        @dockerfile = val.to_s
+      end
+
+      def build_timeout=(val)
+        raise ArgumentError, "Build Timeout must be an Integer" unless val.is_a?(Integer)
+        @build_timeout = val
       end
 
       def spec

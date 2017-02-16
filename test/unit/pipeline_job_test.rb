@@ -1,9 +1,11 @@
+require "test_helper"
+
 describe FortCI::PipelineStageJob do
   it "can be performed" do
     pipeline = FortCI::Pipeline.create(
         project: user.projects.first,
         variables: {name: 'testing'},
-        definition: 'FortCI::StandardPipelineDefinition',
+        definition: 'FortCI::Pipelines::StandardDefinition',
         stage: nil,
         status: 'PENDING',
         event: {project_id: user.projects.first.id},

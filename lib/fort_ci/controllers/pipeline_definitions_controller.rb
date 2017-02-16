@@ -8,7 +8,7 @@ module FortCI
     before("/pipeline_definitions/?*") { protected! }
 
     get "/pipeline_definitions/?" do
-      render json: PipelineDefinitionSerializer.collection(FortCI.pipeline_definitions), root: :pipeline_definitions
+      render json: PipelineDefinitionSerializer.collection(FortCI.pipeline_definitions), root: :pipeline
     end
 
     get "/pipeline_definitions/:name/?" do

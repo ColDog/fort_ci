@@ -1,3 +1,5 @@
+require "test_helper"
+
 describe FortCI::Event  do
   it "can execute" do
     initial = FortCI::Pipeline.count

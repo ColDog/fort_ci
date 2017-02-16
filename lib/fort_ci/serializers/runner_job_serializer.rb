@@ -17,7 +17,7 @@ module FortCI
     end
 
     def build
-      object.spec[:builds]
+      object.spec[:build]
     end
 
     def services
@@ -25,7 +25,7 @@ module FortCI
     end
 
     def commands
-      object.spec[:sections]
+      object.spec[:commands]
     end
 
   end

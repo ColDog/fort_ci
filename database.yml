@@ -1,6 +1,6 @@
 test:
   adapter: <%= ENV['DB_ADAPTER'] || 'sqlite' %>
-  database: <%= ENV['DB_NAME'] || 'test.db' %>
+  database: <%= ENV['DB_NAME'] || 'tmp/test.db' %>
   user: <%= ENV['DB_USER'] || '' %>
   password: <%= ENV['DB_PASS'] || '' %>
   host: <%= ENV['DB_HOST'] || '127.0.0.1' %>

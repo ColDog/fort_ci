@@ -1,7 +1,7 @@
 require "test_helper"
 
-class DoubleJobPipeline < FortCI::PipelineDefinition
-  include FortCI::PipelineHelpers::BasicJobHelper
+class DoubleJobPipeline < FortCI::Pipelines::Definition
+  include FortCI::Pipelines::Builders::Basic
   stage :first, description: 'Start 1 Basic Job', jobs: 1
   stage :second, description: 'Start 1 Basic Job', jobs: 1
   register
@@ -11,11 +11,11 @@ class DoubleJobPipeline < FortCI::PipelineDefinition
   end
 
   def first
-    create_default_job(basic_job_from_file)
+    create_job(basic_job_from_file)
   end
 
   def second
-    create_default_job(basic_job_from_file)
+    create_job(basic_job_from_file)
   end
 end
 

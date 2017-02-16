@@ -1,3 +1,5 @@
+require "test_helper"
+
 describe FortCI::Job do
   it "can be created" do
     pipeline = FortCI::Pipeline.create(

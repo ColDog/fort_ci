@@ -8,8 +8,6 @@ cmd = ARGV[0]
 port = ENV['PORT'] || 3001
 bind = ENV['BIND'] || '0.0.0.0'
 
-ENV['RACK_ENV'] = FortCI.config.env
-
 if cmd == "migrate"
   require "sequel"
   Sequel.extension :migration

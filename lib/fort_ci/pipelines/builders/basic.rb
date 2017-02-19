@@ -20,12 +20,27 @@ module FortCI
               spec.services[id] = ServiceSpec.new(service)
             end
 
-            spec.build = BuildSpec.new(build[:build]) if build[:build]
+            if build[:build]
+              spec.build = BuildSpec.new(build[:build])
+            else
+              spec.build do |build_spec|
+                build_spec.id = 'app'
+                build_spec.dockerfile = '.'
+              end
+            end
 
             spec.repo do |repo|
               repo.project = project
-              repo.commit = event.data[:commit]
-              repo.branch = event.data[:branch]
+
+              if event.data[:commit]
+                repo.commit = event.data[:commit]
+                repo.branch = event.data[:branch]
+              else
+                latest_commit = project.owner.client.latest_commit(project.name)
+                repo.commit = latest_commit[:sha]
+                repo.branch = latest_commit[:branch]
+              end
+
               repo.pull_request = event.data[:pull_request]
             end
 

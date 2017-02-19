@@ -74,13 +74,36 @@ module FortCI
         opts = {} unless opts
         @id = opts[:id]
         @cmd = opts[:cmd]
-        @target = opts[:target]
+        @target = opts[:target] || 'build'
         @run_on_failure = opts[:run_on_failure]
         @run_on_success = opts[:run_on_success]
+        yield(self) if block_given?
+      end
+
+      def id=(val)
+        @id = val.to_s
+      end
+
+      def cmd=(val)
+        @cmd = val.to_s
+      end
+
+      def target=(val)
+        @target = val.to_s
+      end
+
+      def run_on_failure=(val)
+        raise ArgumentError, "Run On Failure must be a Bool" unless [nil, true, false].include?(val)
+        @run_on_failure = val
+      end
+
+      def run_on_success=(val)
+        raise ArgumentError, "Run On Success must be a Bool" unless [nil, true, false].include?(val)
+        @run_on_success = val
       end
 
       def spec
-        {id: id, cmd: cmd, run_on_failure: run_on_failure, run_on_success: run_on_success}
+        {id: id, target: target, cmd: cmd, run_on_failure: run_on_failure, run_on_success: run_on_success}
       end
     end
 
@@ -92,6 +115,7 @@ module FortCI
         @commit = opts[:commit]
         @branch = opts[:branch]
         @pull_request = opts[:pull_request]
+        yield(self) if block_given?
       end
 
       def project=(val)
@@ -161,6 +185,10 @@ module FortCI
     end
 
     class ServiceSpec < ContainerSpec
+      def initialize(opts={})
+        super(opts)
+        yield(self) if block_given?
+      end
     end
 
     class BuildSpec < ContainerSpec
@@ -169,6 +197,8 @@ module FortCI
         opts = {} unless opts
         @dockerfile = opts[:dockerfile]
         @build_timeout = opts[:build_timeout]
+        super(opts)
+        yield(self) if block_given?
       end
 
       def dockerfile=(val)

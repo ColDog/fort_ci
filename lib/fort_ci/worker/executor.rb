@@ -12,7 +12,7 @@ module FortCI
       def initialize(queue_name: nil)
         @jobs_per_run = 10
         name = `hostname`.chomp("\n")
-        @id = "#{name}.#{Process.pid}.#{rand(0..1000)}-#{queue_name || 'all'}"
+        @id = "#{name}.#{Process.pid}.#{rand(0..10000)}-#{queue_name || 'all'}"
         @max_attempts = 25
         @poll_interval = 5
         @job_timeout = 60
@@ -66,10 +66,10 @@ module FortCI
       end
 
       def run(number_to_run=nil)
+        logger.info("Starting worker... count=#{number_to_run} id=#{id}") if @logging_enabled
+
         begin
           while true
-            logger.debug("Polling") if @logging_enabled
-
             t1 = Time.now
             failures = 0
             successes = 0

@@ -20,7 +20,7 @@ module FortCI
     dataset_module do
       def query(params)
         q = self
-        q = q.where(project_id: params[:project_id]) if params[:project_id]
+        q = q.where('jobs.project_id = ?', params[:project_id]) if params[:project_id]
         q = q.where(pipeline_id: params[:pipeline_id]) if params[:pipeline_id]
         q = q.where(status: params[:status]) if params[:status]
         q = q.where('id LIKE ?', "%#{params[:id]}%") if params[:id]
@@ -34,11 +34,11 @@ module FortCI
     end
 
     def self.reject(runner, id)
-      where(id: id, runner: runner).update(runner: nil, status: 'QUEUED')
+      find(id: id, runner: runner).update(runner: nil, status: 'QUEUED')
     end
 
     def self.update_status(runner, id, status, output_url=nil)
-      where(id: id, runner: runner).update(status: status.to_s.upcase, output_url: output_url)
+      find(id: id, runner: runner).update(status: status.to_s.upcase, output_url: output_url)
     end
 
     def after_save

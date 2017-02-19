@@ -16,7 +16,7 @@ module FortCI
     end
 
     def perform
-      if pipeline.status?(:failed) || pipeline.status?(:complete)
+      if pipeline.status?(:failed) || pipeline.status?(:completed)
         # pipeline has already been marked as failing or complete
         return
       end
@@ -36,7 +36,7 @@ module FortCI
 
       if !next_stage && !last_stage_pending?
         # no next stage, pipeline is complete
-        complete_pipeline :successful
+        complete_pipeline :completed
         return
       end
 
@@ -50,7 +50,7 @@ module FortCI
 
       if !last_stage_pending?
         # no jobs were created during the this freshly run stage, therefore everything is done!
-        complete_pipeline :successful
+        complete_pipeline :completed
       end
     end
 

@@ -36,8 +36,9 @@ module FortCI
         end
       end
 
-      def service(id=nil)
-        srvc = ServiceSpec.new(id: id)
+      def service(id=nil, srvc=nil)
+        srvc = ServiceSpec.new unless srvc
+        srvc.id = id if id
         @services << srvc
         yield(srvc) if block_given?
         srvc
@@ -60,7 +61,7 @@ module FortCI
       end
 
       def services_spec
-        Hash[@services.map { |srvc| [srvc.id, srvc.spec] }.flatten]
+        Hash[*@services.map { |srvc| [srvc.id, srvc.spec] }.flatten]
       end
 
       def commands_spec

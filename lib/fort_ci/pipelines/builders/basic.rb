@@ -17,7 +17,7 @@ module FortCI
 
           JobSpec.new do |spec|
             (build[:services] || {}).each do |id, service|
-              spec.services[id] = ServiceSpec.new(service)
+              spec.service(id, ServiceSpec.new(service))
             end
 
             if build[:build]

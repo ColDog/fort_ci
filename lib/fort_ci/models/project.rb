@@ -94,5 +94,9 @@ module FortCI
       end
     end
 
+    def to_s
+      "Project(#{name})"
+    end
+
   end
 end

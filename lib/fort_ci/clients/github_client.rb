@@ -87,7 +87,7 @@ module FortCI
     protected
 
     def req(method, url, params={})
-      FortCI.logger.debug "[github_client] #{method}  https://api.github.com/#{url}"
+      # FortCI.logger.debug "[github_client] #{method}  https://api.github.com/#{url}"
       res = conn.send(method, url, params)
       raise(res.body) unless res.status == 200
       JSON.parse(res.body) if res.body && res.body.length > 0

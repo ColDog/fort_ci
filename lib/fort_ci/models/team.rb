@@ -28,7 +28,7 @@ module FortCI
     end
 
     def to_s
-      "User(#{name})"
+      "Team(#{name})"
     end
   end
 end

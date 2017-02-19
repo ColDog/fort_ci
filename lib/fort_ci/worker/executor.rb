@@ -126,7 +126,7 @@ module FortCI
           handler.on_failure if handler && handler.respond_to?(:on_failure)
 
           logger.info("Failed #{job.job_class}.#{job.id} err: #{e.message}") if @logging_enabled
-          puts e.backtrace
+          # puts e.backtrace
 
           if job.attempts + 1 > max_attempts
             logger.info("Failed #{job.job_class}.#{job.id} Reached max attempts") if @logging_enabled

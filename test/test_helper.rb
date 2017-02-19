@@ -34,7 +34,7 @@ class Minitest::Spec
   include Rack::Test::Methods
 
   def run(*args, &block)
-    Sequel::Model.db.transaction(:rollback=>:always, :auto_savepoint=>true){super}
+    Sequel::Model.db.transaction(rollback: :always, auto_savepoint: true) { super }
   end
 
   def app
@@ -47,8 +47,20 @@ class Minitest::Spec
     @test_user ||= FortCI::User.find(email: 'colintest@gmail.com')
   end
 
+  def real_user
+    @real_user ||= FortCI::User.find(email: 'colinwalker270@gmail.com')
+  end
+
   def team
     @test_team ||= FortCI::Team.find(name: 'TestTeam')
+  end
+
+  def project
+    @test_project ||= FortCI::Project.find(name: 'TestProject')
+  end
+
+  def real_project
+    @real_project ||= FortCI::Project.find(name: 'ci-sample')
   end
 
   def get_as_user(path, opts={}, target_user=user)

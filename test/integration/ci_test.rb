@@ -19,10 +19,21 @@ class DoubleJobPipeline < FortCI::Pipelines::Definition
   end
 end
 
+class ErroringPipeline < FortCI::Pipelines::Definition
+  stage :first, description: 'Job With Error', jobs: 1
+  register
+
+  def self.triggered_by?(event)
+    event.name == 'errorjobtest'
+  end
+
+  def first
+    raise("Error!!!")
+  end
+end
+
 describe FortCI do
   it "can perform and queue jobs" do
-    project = FortCI::Project.first
-
     initial = FortCI::Pipeline.count
     post_as_user "/events", {project_id: project.id, name: 'test'}
     assert response.ok?
@@ -34,8 +45,6 @@ describe FortCI do
   end
 
   it "can run a pipeline" do
-    project = FortCI::Project.first
-
     initial = FortCI::Pipeline.count
     post_as_user "/events", {project_id: project.id, name: 'test'}
     assert response.ok?
@@ -58,8 +67,6 @@ describe FortCI do
   end
 
   it "can run a two job pipeline" do
-    project = FortCI::Project.first
-
     initial = FortCI::Pipeline.count
     post_as_user "/events", {project_id: project.id, name: 'doublejobtest'}
     assert response.ok?
@@ -90,7 +97,46 @@ describe FortCI do
     assert_equal 'SUCCESSFUL', pipeline.reload.status
   end
 
-  it "can run a simple project" do
+  it "can run a real project" do
+    project = real_project
 
+    initial = FortCI::Pipeline.count
+    post_as_user "/events", {project_id: project.id, name: 'test'}, real_user
+    assert response.ok?
+    assert_equal initial + 1, FortCI::Pipeline.count
+
+    pipeline = FortCI::Pipeline.last
+
+    assert_equal 'PENDING', pipeline.status
+
+    initial = FortCI::Job.count
+    FortCI::Worker.executor.run(1)
+    assert_equal initial + 1, FortCI::Job.count
+    assert_equal 'PENDING', pipeline.reload.status
+
+    job = pipeline.jobs.first
+    job.status = 'COMPLETED'
+    job.save
+
+    FortCI::Worker.executor.run(1)
+    assert_equal 'SUCCESSFUL', pipeline.reload.status
+  end
+
+  it "does not pass an erroring pipeline" do
+    project = real_project
+
+    initial = FortCI::Pipeline.count
+    post_as_user "/events", {project_id: project.id, name: 'errorjobtest'}, real_user
+    assert response.ok?
+    assert_equal initial + 2, FortCI::Pipeline.count
+
+    pipeline = FortCI::Pipeline.last
+    assert_equal 'PENDING', pipeline.status
+
+    FortCI::Worker.executor.run(1)
+    assert_equal 'ERROR', pipeline.reload.status
+
+    FortCI::Worker.executor.run(1)
+    assert_equal 'ERROR', pipeline.reload.status
   end
 end

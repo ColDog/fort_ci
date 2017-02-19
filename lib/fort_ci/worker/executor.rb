@@ -42,7 +42,7 @@ module FortCI
 
       def dequeue
         WorkerJob.limit(jobs_per_run)
-            .where('`run_at` < ?', Time.now)
+            .where('`run_at` <= ?', Time.now)
             .where('`locked_by` IS NULL')
             .reverse_order(:priority)
             .update(locked_by: id, locked_at: Time.now)
@@ -68,7 +68,6 @@ module FortCI
       def run(number_to_run=nil)
         begin
           while true
-
             logger.debug("Polling") if @logging_enabled
 
             t1 = Time.now

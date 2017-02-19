@@ -89,4 +89,8 @@ describe FortCI do
     FortCI::Worker.executor.run(1)
     assert_equal 'SUCCESSFUL', pipeline.reload.status
   end
+
+  it "can run a simple project" do
+
+  end
 end

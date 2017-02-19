@@ -1,7 +1,7 @@
 test:
-  adapter: <%= ENV['DB_ADAPTER'] || 'sqlite' %>
-  database: <%= ENV['DB_NAME'] || 'tmp/test.db' %>
-  user: <%= ENV['DB_USER'] || '' %>
+  adapter: <%= ENV['DB_ADAPTER'] || 'mysql2' %>
+  database: <%= ENV['DB_NAME'] || 'fortci_test' %>
+  user: <%= ENV['DB_USER'] || 'root' %>
   password: <%= ENV['DB_PASS'] || '' %>
   host: <%= ENV['DB_HOST'] || '127.0.0.1' %>
 

@@ -3,7 +3,7 @@ require "fort_ci/models"
 module FortCI
   module Pipelines
 
-    def self.define(id)
+    def self.define
       JobSpec.new { |spec| yield(spec) if block_given? }
     end
 
@@ -55,9 +55,6 @@ module FortCI
         @repo
       end
 
-      def validate!
-      end
-
       def build_spec
         @build ? @build.spec : nil
       end
@@ -74,6 +71,7 @@ module FortCI
     class CommandSpec
       attr_accessor :id, :cmd, :target, :run_on_failure, :run_on_success
       def initialize(opts={})
+        opts = {} unless opts
         @id = opts[:id]
         @cmd = opts[:cmd]
         @target = opts[:target]
@@ -89,6 +87,7 @@ module FortCI
     class RepoSpec
       attr_accessor :project, :commit, :branch, :pull_request
       def initialize(opts={})
+        opts = {} unless opts
         self.project = opts[:project] if opts[:project]
         @commit = opts[:commit]
         @branch = opts[:branch]
@@ -120,6 +119,7 @@ module FortCI
     class ContainerSpec
       attr_accessor :id, :image, :cmd, :entrypoint, :env, :after
       def initialize(opts={})
+        opts = {} unless opts
         self.id = opts[:id]
         self.image = opts[:image]
         self.cmd = opts[:cmd]
@@ -145,13 +145,13 @@ module FortCI
       end
 
       def env=(val)
-        val = val.map { |k, v| "#{k}=#{v}" }
-        raise ArgumentError, "Env must be a String array" unless val.is_a?(String) && val.all? { |v| v.is_a?(String) }
+        val = val.map { |k, v| "#{k}=#{v}" } if val.is_a?(Hash)
+        raise ArgumentError, "Env must be a string array" unless val.nil? || val.all? { |v| v.is_a?(String) }
         @env = val
       end
 
       def after=(val)
-        raise ArgumentError, "After must be a String array" unless val.is_a?(String) && val.all? { |v| v.is_a?(String) }
+        raise ArgumentError, "After must be a String array" unless val.nil? || val.all? { |v| v.is_a?(String) }
         @after = val
       end
 
@@ -166,6 +166,7 @@ module FortCI
     class BuildSpec < ContainerSpec
       attr_accessor :dockerfile, :build_timeout
       def initialize(opts={})
+        opts = {} unless opts
         @dockerfile = opts[:dockerfile]
         @build_timeout = opts[:build_timeout]
       end

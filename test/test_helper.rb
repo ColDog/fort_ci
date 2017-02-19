@@ -5,7 +5,11 @@ require "fort_ci"
 
 require "minitest/autorun"
 require "minitest/spec"
+require "minitest/reporters"
 require "rack/test"
+
+reporter_options = {color: true}
+Minitest::Reporters.use! [Minitest::Reporters::DefaultReporter.new(reporter_options)]
 
 require "omniauth"
 

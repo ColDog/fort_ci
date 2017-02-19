@@ -51,7 +51,6 @@ module FortCI
 
       def create_job(spec)
         raise ArgumentError, "Spec must be a JobSpec" unless spec.is_a?(JobSpec)
-        spec.validate!
 
         id = spec.id
 
@@ -59,17 +58,17 @@ module FortCI
         id = "#{pipeline.definition}.#{pipeline.id}.#{stage}-#{@job_creation_idx}" unless id
 
         Job.create(
+            id: id,
             project: spec.repo.project,
             pipeline: pipeline,
             pipeline_stage: stage,
             status: 'QUEUED',
             version: FortCI::VERSION,
+            commit: spec.repo.commit,
+            branch: spec.repo.branch,
             build: spec.build_spec,
             services: spec.services_spec,
             commands: spec.commands_spec,
-            commit: spec.repo.commit,
-            branch: spec.repo.branch,
-            id: id,
         )
       end
 

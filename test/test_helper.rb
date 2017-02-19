@@ -44,7 +44,7 @@ class Minitest::Spec
   include FortCI::SerializationHelper
 
   def user
-    @test_user ||= FortCI::User.find(email: 'colinwalker270@gmail.com')
+    @test_user ||= FortCI::User.find(email: 'colintest@gmail.com')
   end
 
   def team

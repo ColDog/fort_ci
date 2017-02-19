@@ -27,7 +27,7 @@ module FortCI
             id: rand(1000..100000),
             name: repo,
             owner: 'coldog',
-            owner_id: '10747761', # same as seeder
+            owner_id: 'test', # same as seeder
             owner_type: :user, # or :user
         }
       end

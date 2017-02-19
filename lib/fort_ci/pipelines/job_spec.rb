@@ -17,7 +17,7 @@ module FortCI
         @id = nil
         @repo = nil
         @build = nil
-        @services = {}
+        @services = []
         @commands = []
         yield(self) if block_given?
       end
@@ -29,16 +29,16 @@ module FortCI
         cmd
       end
 
-      def command_section(id, run_on_failure: false, run_on_success: true, commands: [])
+      def command_section(id, run_on_failure: false, target: nil, run_on_success: true, commands: [])
         yield(commands) if block_given?
         commands.each do |cmd|
-          @commands << CommandSpec.new(id: id, run_on_success: run_on_success, run_on_failure: run_on_failure, cmd: cmd)
+          @commands << CommandSpec.new(id: id, target: target, run_on_success: run_on_success, run_on_failure: run_on_failure, cmd: cmd)
         end
       end
 
-      def service(id)
-        srvc = ServiceSpec.new
-        @services[id] = srvc
+      def service(id=nil)
+        srvc = ServiceSpec.new(id: id)
+        @services << srvc
         yield(srvc) if block_given?
         srvc
       end
@@ -60,7 +60,7 @@ module FortCI
       end
 
       def services_spec
-        @services.reduce({}) { |h, (id, srvc)| h.merge(id => srvc.spec) }
+        Hash[@services.map { |srvc| [srvc.id, srvc.spec] }.flatten]
       end
 
       def commands_spec

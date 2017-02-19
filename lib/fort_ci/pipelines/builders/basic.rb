@@ -45,10 +45,10 @@ module FortCI
             end
 
             cmds = build[:commands] || {}
-            spec.command_section :setup,      run_on_failure: false, run_on_success: true,  commands: (cmds[:setup] || [])
-            spec.command_section :test,       run_on_failure: false, run_on_success: true,  commands: (cmds[:test] || [])
-            spec.command_section :on_success, run_on_failure: false, run_on_success: true,  commands: (cmds[:on_success] || [])
-            spec.command_section :on_failure, run_on_failure: true,  run_on_success: false, commands: (cmds[:on_failure] || [])
+            spec.command_section :setup,      target: :machine, run_on_failure: false, run_on_success: true,  commands: (cmds[:setup] || [])
+            spec.command_section :test,       target: :build,   run_on_failure: false, run_on_success: true,  commands: (cmds[:test] || [])
+            spec.command_section :on_success, target: :machine, run_on_failure: false, run_on_success: true,  commands: (cmds[:on_success] || [])
+            spec.command_section :on_failure, target: :machine, run_on_failure: true,  run_on_success: false, commands: (cmds[:on_failure] || [])
           end
         end
 

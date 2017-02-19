@@ -1,21 +1,18 @@
 services:
-  - name: db
-    docker:
-      name: db
-      image: mysql:5.7
-      env:
-        - MYSQL_USER=dbuser
-        - MYSQL_PASSWORD=pass
-        - MYSQL_ROOT_PASSWORD=pass
-        - MYSQL_DATABASE=fort_ci
-      after:
-        - while ! mysql -u root --password=pass -e "select 1" ; do sleep 2; echo "waiting for mysql" ; done
+  db:
+    image: mysql:5.7
+    env:
+      - MYSQL_USER=dbuser
+      - MYSQL_PASSWORD=pass
+      - MYSQL_ROOT_PASSWORD=pass
+      - MYSQL_DATABASE=fort_ci
+    after:
+      - while ! mysql -u root --password=pass -e "select 1" ; do sleep 2; echo "waiting for mysql" ; done
 
 commands:
   test:
-    - docker logs app
-    - docker exec app bundle install
-    - docker exec app rake test
+    - bundle install
+    - rake test
 
   after:
     - echo 'done'

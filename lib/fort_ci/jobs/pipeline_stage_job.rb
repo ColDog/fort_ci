@@ -8,6 +8,7 @@ module FortCI
       @pipeline = Pipeline.with_pk!(data[:pipeline_id])
       @definition = pipeline.definition_class.new(pipeline, pipeline.event)
       @event = pipeline.event
+      @prev_stage = pipeline.stage
     end
 
     def self.enqueue(pipeline)
@@ -57,7 +58,9 @@ module FortCI
       begin
         definition.send(this_stage)
       rescue Exception => e
-        pipeline.update(status: 'ERROR', error: e.message)
+        # Update the pipeline with an error status, we also ensure to keep the stage at the previous one. Otherwise the
+        # pipeline will move forward.
+        pipeline.update(status: 'ERROR', error: e.message, stage: @prev_stage)
         raise e
       end
     end

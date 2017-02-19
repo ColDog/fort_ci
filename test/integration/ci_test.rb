@@ -19,19 +19,6 @@ class DoubleJobPipeline < FortCI::Pipelines::Definition
   end
 end
 
-class ErroringPipeline < FortCI::Pipelines::Definition
-  stage :first, description: 'Job With Error', jobs: 1
-  register
-
-  def self.triggered_by?(event)
-    event.name == 'errorjobtest'
-  end
-
-  def first
-    raise("Error!!!")
-  end
-end
-
 describe FortCI do
   it "can perform and queue jobs" do
     initial = FortCI::Pipeline.count

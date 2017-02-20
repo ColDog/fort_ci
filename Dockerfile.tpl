@@ -1,4 +1,4 @@
-FROM ruby:2.3.1
+FROM ruby:{{ .version }}
 
 RUN apt-get -qq update && apt-get install -y build-essential
 RUN apt-get install -y libmysqlclient-dev

@@ -193,13 +193,19 @@ module FortCI
     end
 
     class BuildSpec < ContainerSpec
-      attr_accessor :dockerfile, :build_timeout
+      attr_accessor :dockerfile, :build_timeout, :template
       def initialize(opts={})
         opts = {} unless opts
         @dockerfile = opts[:dockerfile]
         @build_timeout = opts[:build_timeout]
+        @template = opts[:template]
         super(opts)
         yield(self) if block_given?
+      end
+
+      def template=(val)
+        raise ArgumentError, "Template is not a hash" unless val.is_a?(Hash)
+        @template = val
       end
 
       def dockerfile=(val)

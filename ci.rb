@@ -12,8 +12,9 @@ class FortCIPipeline < FortCI::Pipelines::Definition
   }
 
   include FortCI::Pipelines::Builders::Basic
-  stage :main,      description: 'Start 1 Basic Job', jobs: DB_IMAGES.length * RUBY_VERSIONS.length
-  stage :publisher, description: 'Publish results',   jobs: 0
+
+  stage         :main,      description: 'Start 1 Basic Job', jobs: DB_IMAGES.length * RUBY_VERSIONS.length
+  ensure_stage  :publisher, description: 'Publish results',   jobs: 0
   register
 
   def main
@@ -58,3 +59,7 @@ class FortCIPipeline < FortCI::Pipelines::Definition
   end
 
 end
+
+FortCI.deregister_pipeline_definition FortCI::Pipelines::StandardDefinition
+
+FortCI.run_single

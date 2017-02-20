@@ -45,6 +45,10 @@ module FortCI
       pipeline_definitions[name || pipeline_definition.name] = pipeline_definition
     end
 
+    def deregister_pipeline_definition(pipeline_definition)
+      pipeline_definitions.delete(pipeline_definition.name)
+    end
+
     def pipeline_definitions
       @pipeline_definitions ||= {}
     end
